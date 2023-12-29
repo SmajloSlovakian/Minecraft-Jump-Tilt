@@ -13,7 +13,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
     public static Cdata cfg;
-    public static float cfgVersion=1.0f;
+    public static float cfgVersion=1.1f;
     public static boolean problemReading=false;
     public Config(){
         File cfgfile=FabricLoader.getInstance().getConfigDir().resolve("jumptilt.json").toFile();
@@ -32,7 +32,10 @@ public class Config {
 
         if(!problemReading){ //config updating system
             if(cfg.cfgVersion<cfgVersion)JT.print("Config values before updating:\n"+printify());
-            cfg.note="Speed can be 0 - 1 (inclusive). Amount can be 0+.";
+            if(cfg.cfgVersion==1){
+                cfg.speed=1;
+            }
+            cfg.note="Speed can be 0 or more. Amount can be any number. Press F3+T in a world to update config.";
             writeFile(cfgfile);
         }
         JT.print("Config values:\n"+printify());
@@ -63,7 +66,11 @@ public class Config {
         }catch(Exception e){}
     }
     String printify(){
-        return("");
+        return(
+            "Speed: "+cfg.speed+"\n"+
+            "Amount: "+cfg.amount+"\n"+
+            "CfgVersion: "+cfgVersion
+        );
     }
     public class Cdata implements Serializable{
         @Expose
@@ -71,8 +78,8 @@ public class Config {
         @Expose
         public float amount=5;
         @Expose
-        public float speed=0.25f;
+        public float speed=1;
         @Expose
-        public float cfgVersion=1.0f;
+        public float cfgVersion=1.1f;
     }
 }

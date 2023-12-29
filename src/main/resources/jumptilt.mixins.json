@@ -3,7 +3,8 @@
 	"package": "smsk.jumptilt.mixin",
 	"compatibilityLevel": "JAVA_17",
 	"mixins": [
-		"GameRendererMixin"
+		"GameRendererMixin",
+		"MinecraftClientMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
