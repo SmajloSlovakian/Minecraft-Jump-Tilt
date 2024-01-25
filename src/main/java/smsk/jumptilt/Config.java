@@ -33,7 +33,8 @@ public class Config {
         if(!problemReading){ //config updating system
             if(cfg.cfgVersion<cfgVersion)JT.print("Config values before updating:\n"+printify());
             if(cfg.cfgVersion==1){
-                cfg.speed=1;
+                cfg.speed=1.0f;
+                cfg.cfgVersion=1.1f;
             }
             cfg.note="Speed can be 0 or more. Amount can be any number. Press F3+T in a world to update config.";
             writeFile(cfgfile);

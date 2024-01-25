@@ -19,12 +19,14 @@ public class GameRendererMixin {
     @Inject(method = "render",at = @At("HEAD"))
     private void frame(float tickDelta, long startTime, boolean tick, CallbackInfo ci){
         try{
-            velYbuffer=MathHelper.lerp((float)Math.pow(tickDelta, Config.cfg.speed), velYbuffer, (float)JT.mc.player.getVelocity().y);
+            //JT.print(JT.mc.getLastFrameDuration());
+            velYbuffer=MathHelper.lerp(JT.mc.getLastFrameDuration()*Config.cfg.speed, velYbuffer, (float)JT.mc.player.getVelocity().y);
+            //velYbuffer+=(JT.mc.player.getVelocity().y-velYbuffer)*Math.pow(Config.cfg.speed,JT.mc.getLastFrameDuration());
         }catch(Exception e){}
     }
 
     @Inject(method = "bobView",at = @At("TAIL"))
     private void jumpTiltTest(MatrixStack matrices, float tickDelta, CallbackInfo ci){
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(MathHelper.clamp(JT.mc.player.prevPitch+velYbuffer*-Config.cfg.amount,-90,90)-JT.mc.player.prevPitch));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees((float)MathHelper.clamp(JT.mc.player.prevPitch+velYbuffer*-Config.cfg.amount,-90,90)-JT.mc.player.prevPitch));
     }
 }
