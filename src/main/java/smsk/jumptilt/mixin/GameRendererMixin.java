@@ -19,9 +19,10 @@ public class GameRendererMixin {
     @Inject(method = "render",at = @At("HEAD"))
     private void frame(float tickDelta, long startTime, boolean tick, CallbackInfo ci){
         try{
+
             //JT.print(JT.mc.getLastFrameDuration());
-            velYbuffer=MathHelper.lerp(JT.mc.getLastFrameDuration()*Config.cfg.speed, velYbuffer, (float)JT.mc.player.getVelocity().y);
-            //velYbuffer+=(JT.mc.player.getVelocity().y-velYbuffer)*Math.pow(Config.cfg.speed,JT.mc.getLastFrameDuration());
+            //velYbuffer=MathHelper.lerp(JT.mc.getLastFrameDuration()*Config.cfg.speed, velYbuffer, (float)JT.mc.player.getVelocity().y);
+            velYbuffer=(velYbuffer-(float)JT.mc.player.getVelocity().y)*(float)Math.pow(Config.cfg.speed, JT.mc.getLastFrameDuration())+(float)JT.mc.player.getVelocity().y;
         }catch(Exception e){}
     }
 

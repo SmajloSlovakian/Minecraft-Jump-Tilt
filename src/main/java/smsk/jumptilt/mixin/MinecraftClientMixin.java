@@ -16,4 +16,9 @@ public class MinecraftClientMixin {
     void onResReload(CallbackInfoReturnable<CompletableFuture<Void>> cir){
         JT.updateConfig();
     }
+
+    /*@Inject(method = "openPauseMenu",at = @At("HEAD"))
+    void onResReload(boolean b,CallbackInfo ci){
+        JT.updateConfig();
+    }/* */
 }

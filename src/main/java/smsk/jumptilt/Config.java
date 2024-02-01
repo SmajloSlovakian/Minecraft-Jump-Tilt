@@ -13,7 +13,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
     public static Cdata cfg;
-    public static float cfgVersion=1.1f;
+    public static float cfgVersion=1.3f;
     public static boolean problemReading=false;
     public Config(){
         File cfgfile=FabricLoader.getInstance().getConfigDir().resolve("jumptilt.json").toFile();
@@ -32,11 +32,11 @@ public class Config {
 
         if(!problemReading){ //config updating system
             if(cfg.cfgVersion<cfgVersion)JT.print("Config values before updating:\n"+printify());
-            if(cfg.cfgVersion==1){
-                cfg.speed=1.0f;
-                cfg.cfgVersion=1.1f;
+            if(cfg.cfgVersion<1.3f){
+                cfg.speed=0.5f;
+                cfg.cfgVersion=1.3f;
             }
-            cfg.note="Speed can be 0 or more. Amount can be any number. Press F3+T in a world to update config.";
+            cfg.note="Speed can be between 0 (instant tilting) and 1 (tilting off). Amount can be any number. Press F3+T in a world to update config.";
             writeFile(cfgfile);
         }
         JT.print("Config values:\n"+printify());
@@ -79,8 +79,8 @@ public class Config {
         @Expose
         public float amount=5;
         @Expose
-        public float speed=1;
+        public float speed=0.5f;
         @Expose
-        public float cfgVersion=1.1f;
+        public float cfgVersion=1.3f;
     }
 }
