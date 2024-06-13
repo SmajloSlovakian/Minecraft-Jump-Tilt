@@ -13,7 +13,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
     public static Cdata cfg;
-    public static float cfgVersion=1.4f;
+    public static float cfgVersion=1.5f;
     public static boolean problemReading=false;
     public Config(){
         File cfgfile=FabricLoader.getInstance().getConfigDir().resolve("jumptilt.json").toFile();
@@ -39,6 +39,10 @@ public class Config {
             if(cfg.cfgVersion<1.4f){
                 cfg.upperClamping = 5;
                 cfg.lowerClamping = 0.25f;
+            }
+            if(cfg.cfgVersion<1.5f){
+                cfg.upperClampBreak = 0.1f;
+                cfg.lowerClampBreak = 0.1f;
             }
             cfg.cfgVersion = cfgVersion;
             cfg.note="Speed can be between 0 (instant tilting) and 1 (tilting off). Amount can be any number. Press F3+T in a world to update config.";
@@ -76,6 +80,7 @@ public class Config {
             "Speed: "+cfg.speed+"\n"+
             "Amount: "+cfg.amount+"\n"+
             "Clamping: "+cfg.lowerClamping+"; "+cfg.upperClamping+"\n"+
+            "ClampBreak: "+cfg.lowerClampBreak+"; "+cfg.upperClampBreak+"\n"+
             "CfgVersion: "+cfgVersion
         );
     }
@@ -90,6 +95,10 @@ public class Config {
         public float upperClamping = 5;
         @Expose
         public float lowerClamping = 0.25f;
+        @Expose
+        public float upperClampBreak = 0.1f;
+        @Expose
+        public float lowerClampBreak = 0.1f;
         @Expose
         public float cfgVersion = 1.4f;
     }
