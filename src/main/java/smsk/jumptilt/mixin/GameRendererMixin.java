@@ -21,7 +21,7 @@ public class GameRendererMixin {
         try {
             float targetTilt = (float) JT.mc.player.getVelocity().y * -Config.cfg.amount;
 
-            targetTilt = customClamp(JT.mc.player.prevPitch + targetTilt, -90 - Config.cfg.upperClamping, 90 + Config.cfg.lowerClamping, Config.cfg.lowerClampBreak, Config.cfg.upperClampBreak) - JT.mc.player.prevPitch;
+            targetTilt = customClamp(JT.mc.player.prevPitch + targetTilt, -90 - Config.cfg.upperClamping, 90 + Config.cfg.lowerClamping, Config.cfg.upperClampBreak, Config.cfg.lowerClampBreak) - JT.mc.player.prevPitch;
             if (JT.mc.player.isOnGround()) targetTilt = 0;
             
             tiltDegrees = MathHelper.clamp((tiltDegrees - targetTilt) * (float) Math.pow(Config.cfg.speed, JT.mc.getRenderTickCounter().getLastFrameDuration()) + targetTilt, -90, 90);
