@@ -15,11 +15,10 @@ import smsk.jumptilt.JT;
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
     private float tiltDegrees = 0;
-
     private float clampingAmount = 0.1f;
 
-    @Inject(method = "render",at = @At("HEAD"))
-    private void frame(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
+    @Inject(method = "bobView",at = @At("TAIL"))
+    private void jumpTiltTest(MatrixStack matrices, float tickDelta, CallbackInfo ci){
         try {
             float targetTilt = (float) JT.mc.player.getVelocity().y * -Config.cfg.amount;
 
@@ -27,12 +26,8 @@ public class GameRendererMixin {
             if (JT.mc.player.isOnGround()) targetTilt = 0;
             
             tiltDegrees = MathHelper.clamp((tiltDegrees - targetTilt) * (float) Math.pow(Config.cfg.speed, JT.mc.getLastFrameDuration()) + targetTilt, -90, 90);
+            matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(tiltDegrees));
         } catch (Exception e) {}
-    }
-
-    @Inject(method = "bobView",at = @At("TAIL"))
-    private void jumpTiltTest(MatrixStack matrices, float tickDelta, CallbackInfo ci){
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(tiltDegrees));
     }
     private float customClamp(float val, float min, float max, float amountForMin, float amountForMax) {
         if (val < min) {
