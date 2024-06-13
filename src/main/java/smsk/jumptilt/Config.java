@@ -13,7 +13,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class Config {
     public static Cdata cfg;
-    public static float cfgVersion=1.3f;
+    public static float cfgVersion=1.4f;
     public static boolean problemReading=false;
     public Config(){
         File cfgfile=FabricLoader.getInstance().getConfigDir().resolve("jumptilt.json").toFile();
@@ -36,6 +36,11 @@ public class Config {
                 cfg.speed=0.5f;
                 cfg.cfgVersion=1.3f;
             }
+            if(cfg.cfgVersion<1.4f){
+                cfg.upperClamping = 5;
+                cfg.lowerClamping = 0.25f;
+            }
+            cfg.cfgVersion = cfgVersion;
             cfg.note="Speed can be between 0 (instant tilting) and 1 (tilting off). Amount can be any number. Press F3+T in a world to update config.";
             writeFile(cfgfile);
         }
@@ -70,17 +75,22 @@ public class Config {
         return(
             "Speed: "+cfg.speed+"\n"+
             "Amount: "+cfg.amount+"\n"+
+            "Clamping: "+cfg.lowerClamping+"; "+cfg.upperClamping+"\n"+
             "CfgVersion: "+cfgVersion
         );
     }
     public class Cdata implements Serializable{
         @Expose
-        public String note="";
+        public String note = "";
         @Expose
-        public float amount=5;
+        public float amount = 5;
         @Expose
-        public float speed=0.5f;
+        public float speed = 0.5f;
         @Expose
-        public float cfgVersion=1.3f;
+        public float upperClamping = 5;
+        @Expose
+        public float lowerClamping = 0.25f;
+        @Expose
+        public float cfgVersion = 1.4f;
     }
 }

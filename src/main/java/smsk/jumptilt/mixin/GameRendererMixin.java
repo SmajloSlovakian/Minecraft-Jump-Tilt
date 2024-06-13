@@ -14,20 +14,32 @@ import smsk.jumptilt.JT;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
-    private float velYbuffer=0;
+    private float tiltDegrees = 0;
+
+    private float clampingAmount = 0.1f;
 
     @Inject(method = "render",at = @At("HEAD"))
-    private void frame(float tickDelta, long startTime, boolean tick, CallbackInfo ci){
-        try{
+    private void frame(float tickDelta, long startTime, boolean tick, CallbackInfo ci) {
+        try {
+            float targetTilt = (float) JT.mc.player.getVelocity().y * -Config.cfg.amount;
 
-            //JT.print(JT.mc.getLastFrameDuration());
-            //velYbuffer=MathHelper.lerp(JT.mc.getLastFrameDuration()*Config.cfg.speed, velYbuffer, (float)JT.mc.player.getVelocity().y);
-            velYbuffer=(velYbuffer-(float)JT.mc.player.getVelocity().y)*(float)Math.pow(Config.cfg.speed, JT.mc.getLastFrameDuration())+(float)JT.mc.player.getVelocity().y;
-        }catch(Exception e){}
+            targetTilt = customClamp(JT.mc.player.prevPitch + targetTilt, -90 - Config.cfg.upperClamping, 90 + Config.cfg.lowerClamping, clampingAmount, clampingAmount) - JT.mc.player.prevPitch;
+            if (JT.mc.player.isOnGround()) targetTilt = 0;
+            
+            tiltDegrees = MathHelper.clamp((tiltDegrees - targetTilt) * (float) Math.pow(Config.cfg.speed, JT.mc.getLastFrameDuration()) + targetTilt, -90, 90);
+        } catch (Exception e) {}
     }
 
     @Inject(method = "bobView",at = @At("TAIL"))
     private void jumpTiltTest(MatrixStack matrices, float tickDelta, CallbackInfo ci){
-        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees((float)MathHelper.clamp(JT.mc.player.prevPitch+velYbuffer*-Config.cfg.amount,-90,90)-JT.mc.player.prevPitch));
+        matrices.multiply(RotationAxis.POSITIVE_X.rotationDegrees(tiltDegrees));
+    }
+    private float customClamp(float val, float min, float max, float amountForMin, float amountForMax) {
+        if (val < min) {
+            val = (val - min) * amountForMin + min;
+        } else if (val > max) {
+            val = (val - max) * amountForMax + max;
+        }
+        return val;
     }
 }
