@@ -1,14 +1,13 @@
 {
 	"schemaVersion": 1,
-	"id": "jumptilt",
+	"id": "jump-tilt",
 	"version": "${version}",
-	"name": "JumpTilt",
-	"description": "Brings Back Jump Tilt",
+	"name": "Jump Tilt",
+	"description": "Brings back jump tilt",
 	"authors": [
-		"SlovakSmileSK"
+		"SmajloSlovakian"
 	],
 	"contact": {
-		"homepage": "https://fabricmc.net/",
 		"sources": "https://github.com/SmajloSlovakian/Minecraft-Smooth-Scrolling"
 	},
 	"license": "gpl-3.0",
@@ -16,18 +15,23 @@
 	"environment": "*",
 	"entrypoints": {
 		"main": [
-			"smsk.jumptilt.JT"
+			"io.github.smajloslovakian.jumptilt.JumpTilt"
+		],
+		"client": [
+			"io.github.smajloslovakian.jumptilt.JT"
 		]
 	},
 	"mixins": [
-		"jumptilt.mixins.json"
+		"jump-tilt.mixins.json",
+		{
+			"config": "jump-tilt.client.mixins.json",
+			"environment": "client"
+		}
 	],
 	"depends": {
-		"fabricloader": ">=0.15.10",
-		"minecraft": ">1.20.6",
-		"java": ">=17"
-	},
-	"suggests": {
-		"another-mod": "*"
+		"fabricloader": ">=0.18.4",
+		"minecraft": ">26.1-",
+		"java": ">=25",
+		"fabric-api": "*"
 	}
 }

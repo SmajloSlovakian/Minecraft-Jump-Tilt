@@ -1,4 +1,4 @@
-package smsk.jumptilt;
+package io.github.smajloslovakian.jumptilt;
 
 import java.io.File;
 import java.io.FileReader;
