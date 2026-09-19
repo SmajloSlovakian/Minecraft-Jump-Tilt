@@ -1,6 +1,7 @@
 package io.github.smajloslovakian.jumptilt.mixin.client;
 
 import org.joml.Matrix3x2fStack;
+import org.joml.Matrix4fc;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -29,7 +30,8 @@ public class GameRendererMixin {
             if (JT.mc.player.onGround()) targetTilt = 0;
             
             tiltDegrees = Math.clamp((tiltDegrees - targetTilt) * (float) Math.pow(Config.cfg.speed, JT.mc.getDeltaTracker().getGameTimeDeltaTicks()) + targetTilt, -90, 90);
-            matrices.mulPose(Axis.XP.rotationDegrees(tiltDegrees));
+            //matrices.mulPose((Matrix4fc) Axis.XP.rotationDegrees(tiltDegrees));
+            matrices.rotateDegrees(Axis.XP, targetTilt);
             
         } catch (Exception e) {}
     }
